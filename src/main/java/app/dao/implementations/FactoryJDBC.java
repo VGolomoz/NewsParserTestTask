@@ -6,7 +6,7 @@ import app.dao.interfaces.NewsDAO;
 
 import java.sql.Connection;
 
-public class FactoryJDBC implements FactoryDAO {
+public class FactoryJDBC extends FactoryDAO {
 
     private Connection connection = DBCPDataSource.getConnection();
 
