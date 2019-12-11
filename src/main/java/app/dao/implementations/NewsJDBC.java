@@ -20,14 +20,14 @@ public class NewsJDBC implements NewsDAO {
     }
 
     @Override
-    public void create(News news) {
+    public Boolean create(News news) {
         try (PreparedStatement ps = connection.prepareStatement(NewsQuery.INSERT_INTO_NEWS_TABLE.name())) {
-            ps.setLong(1, news.getId());
-            ps.setString(2, news.getTitle());
-            ps.setString(3, news.getAuthor());
-            ps.setDate(4, news.getPostDate());
-            ps.setString(5, news.getTextPath());
-            ps.executeUpdate();
+            ps.setString(1, news.getTitle());
+            ps.setString(2, news.getAuthor());
+            ps.setString(3, news.getPostDate());
+            ps.setString(4, news.getTextPath());
+            int updateSuccessful = 1;
+            return ps.executeUpdate() == updateSuccessful;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -51,7 +51,7 @@ public class NewsJDBC implements NewsDAO {
     }
 
     @Override
-    public boolean delete(Long id) {
+    public Boolean delete(Long id) {
         try (PreparedStatement ps = connection.prepareStatement(NewsQuery.DELETE_NEWS_BY_ID.name())) {
             ps.setLong(1, id);
             int updateSuccessful = 1;

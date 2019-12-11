@@ -1,24 +1,23 @@
 package app.entities;
 
-import java.sql.Date;
 import java.util.Objects;
 
 public class News {
 
-    private Long id;
+    private Integer id;
     private String title;
     private String author;
-    private Date postDate;
+    private String postDate;
     private String textPath;
 
     public News() {
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -38,11 +37,11 @@ public class News {
         this.author = author;
     }
 
-    public Date getPostDate() {
+    public String getPostDate() {
         return postDate;
     }
 
-    public void setPostDate(Date postDate) {
+    public void setPostDate(String postDate) {
         this.postDate = postDate;
     }
 

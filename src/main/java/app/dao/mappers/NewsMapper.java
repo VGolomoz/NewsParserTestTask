@@ -12,10 +12,10 @@ public class NewsMapper implements Mapper<News> {
     public News getEntity(ResultSet rs) throws SQLException {
 
         News news = new News();
-        news.setId(rs.getLong(NewsTable.ID));
+        news.setId(rs.getInt(NewsTable.ID));
         news.setTitle(rs.getString(NewsTable.TITLE));
         news.setAuthor(rs.getString(NewsTable.AUTHOR));
-        news.setPostDate(rs.getDate(NewsTable.POST_DATE));
+        news.setPostDate(rs.getString(NewsTable.POST_DATE));
         news.setTextPath(rs.getString(NewsTable.TEXT_PATH));
 
         return news;

@@ -1,13 +1,11 @@
 package app.dao.interfaces;
 
-import java.util.List;
-
 public interface DAO<T> extends AutoCloseable {
-    void create(T entity);
+    Boolean create(T entity);
 
     T getById(Long id);
 
-    boolean delete(Long id);
+    Boolean delete(Long id);
 
     @Override
     void close();

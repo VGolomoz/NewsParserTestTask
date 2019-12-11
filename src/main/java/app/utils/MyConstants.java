@@ -7,6 +7,4 @@ public class MyConstants {
     public static final String DB_USER = "root";
     public static final String DB_PASSWORD = "asDF1506";
 
-
-
 }
