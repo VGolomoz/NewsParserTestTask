@@ -14,7 +14,6 @@ public class NewsMapper implements Mapper<News> {
         News news = new News();
         news.setId(rs.getInt(NewsTable.ID));
         news.setTitle(rs.getString(NewsTable.TITLE));
-        news.setAuthor(rs.getString(NewsTable.AUTHOR));
         news.setPostDate(rs.getString(NewsTable.POST_DATE));
         news.setTextPath(rs.getString(NewsTable.TEXT_PATH));
 

@@ -6,7 +6,6 @@ public class News {
 
     private Integer id;
     private String title;
-    private String author;
     private String postDate;
     private String textPath;
 
@@ -27,14 +26,6 @@ public class News {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
     }
 
     public String getPostDate() {
@@ -60,14 +51,13 @@ public class News {
         News news = (News) o;
         return Objects.equals(id, news.id) &&
                 Objects.equals(title, news.title) &&
-                Objects.equals(author, news.author) &&
                 Objects.equals(postDate, news.postDate) &&
                 Objects.equals(textPath, news.textPath);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, author, postDate, textPath);
+        return Objects.hash(id, title, postDate, textPath);
     }
 
     @Override
@@ -75,9 +65,8 @@ public class News {
         return "News{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", author='" + author + '\'' +
-                ", postDate=" + postDate +
-                ", text='" + textPath + '\'' +
+                ", postDate='" + postDate + '\'' +
+                ", textPath='" + textPath + '\'' +
                 '}';
     }
 }
