@@ -5,26 +5,25 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
-import java.util.UUID;
+import java.util.Arrays;
+import java.util.LinkedList;
+
 import static app.utils.MyConstants.*;
 
 public class Parser {
 
     private NewsService newsService;
+    private WordsBuffer wordsBuffer;
+    public static boolean isActive = true;
 
-    public Parser(NewsService newsService) {
+    public Parser(NewsService newsService, WordsBuffer wordsBuffer) {
         this.newsService = newsService;
+        this.wordsBuffer = wordsBuffer;
     }
 
-    public void start(List<String> categories) {
-        categories.forEach(this::parseAndSave);
-    }
+    public void parseAndSave(String category) {
 
-    private void parseAndSave(String category) {
-        new Thread(() -> {
             try {
                 Document categoryPage = Jsoup
                         .connect(category)
@@ -48,24 +47,29 @@ public class Parser {
                         .first()
                         .text();
 
+                newsService.createNewsInDB(newsTitle, newsPostDate, linkToLastNewsFromCategory);
+
                 StringBuilder clearNewsText = new StringBuilder();
                 Elements newsTextWithOneExtraSentencesBeforeAndOneAfter = LastNewsPageFromCategory.select(CSS_QUERY_WITH_NEWS_TEXT);
                 for (int i = 1; i < newsTextWithOneExtraSentencesBeforeAndOneAfter.size() - 2; i++) {
                     clearNewsText.append(newsTextWithOneExtraSentencesBeforeAndOneAfter.get(i).text());
                 }
 
-                String fileNameForSaveNewsText = UUID.randomUUID() + ".txt";
+                LinkedList<String> words = new LinkedList<>();
+                words.addAll(Arrays.asList(clearNewsText.toString()
+                        .replaceAll("[^a-zA-Zа-яА-Я0-9 _-]", "")
+                        .split(" ")));
 
-                if (newsService.createNewsInDB(newsTitle, newsPostDate, fileNameForSaveNewsText)) {
-                    FileWriter writer = new FileWriter(fileNameForSaveNewsText, false);
-                    writer.write(clearNewsText.toString());
-                    writer.flush();
-                    writer.close();
+                while (isActive) {
+                    if (!words.isEmpty()) {
+                        wordsBuffer.addWord(words.poll());
+                    } else {
+                        isActive = false;
+                    }
                 }
 
-            } catch (IOException e) {
+            } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
-        }).start();
     }
 }
