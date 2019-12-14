@@ -6,40 +6,16 @@ import app.service.WordsCountService;
 import app.service.implementations.NewsServiceImpl;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import static app.utils.MyConstants.*;
 
 public class app {
 
-
-
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        List<String> categories = new ArrayList<>();
-        categories.add(POLITICS_CATEGORY);
-        categories.add(WAR_CATEGORY);
-        categories.add(SOCIETY_CATEGORY);
-        categories.add(WORLD_CATEGORY);
-        categories.add(HEALTH_CATEGORY);
+        WordsBuffer wordsBuffer = new WordsBuffer(100);
 
-        WordsBuffer wordsBuffer = new WordsBuffer(5);
+        new Parser(new NewsServiceImpl(), wordsBuffer).start();
 
-        Thread producer = new Thread(() -> {
-            new Parser(new NewsServiceImpl(), wordsBuffer).parseAndSave(categories.get(0));
-        });
-
-        Thread consumer = new Thread(() -> {
-            System.out.println(new WordsCountService(wordsBuffer).count("Флоран"));
-        });
-
-
-        producer.start();
-        consumer.start();
-
-        producer.join();
-        consumer.join();
+        new Thread(() -> System.out.println(new WordsCountService(wordsBuffer).count("церкви"))).start();
 
     }
 }

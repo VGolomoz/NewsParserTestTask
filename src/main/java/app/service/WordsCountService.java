@@ -11,14 +11,21 @@ public class WordsCountService {
 
     public Long count(String wordMarker) {
 
-        while (Parser.isActive) {
+        int amountOfWritingThreads = 5;
+
+        while (Parser.writeThreadsFinished.intValue() < amountOfWritingThreads || !wordsBuffer.isEmpty) {
 
             String word = wordsBuffer.getWord();
-            System.out.println("Consumer get word: " + word);
             if (word.equalsIgnoreCase(wordMarker)) {
                 counter++;
             }
         }
+
+        for (String s: wordsBuffer.wordsList) {
+            System.out.println(s);
+        }
+        System.out.println("Add words: " + wordsBuffer.addCount);
+        System.out.println("Get words: " + wordsBuffer.getCount);
         return counter;
     }
 }

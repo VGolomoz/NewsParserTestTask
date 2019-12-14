@@ -1,11 +1,15 @@
 package app.service;
 
 import java.util.LinkedList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class WordsBuffer {
 
-    private LinkedList<String> wordsList;
+    public LinkedList<String> wordsList;
     private int listCapacity;
+    public volatile boolean isEmpty = true;
+    public static volatile AtomicInteger addCount = new AtomicInteger(0);
+    public static volatile AtomicInteger getCount = new AtomicInteger(0);
 
     public WordsBuffer(int capacity) {
         this.wordsList = new LinkedList<>();
@@ -19,9 +23,9 @@ public class WordsBuffer {
             while (wordsList.size() >= listCapacity) {
                 wait();
             }
-
-            System.out.println("Produced add word: " + word);
+            addCount.incrementAndGet();
             wordsList.addLast(word);
+            if (isEmpty) isEmpty = false;
             notify();
         }
     }
@@ -37,8 +41,9 @@ public class WordsBuffer {
                     e.printStackTrace();
                 }
             }
-
             String word = wordsList.poll();
+            if (wordsList.size() == 0) isEmpty = true;
+            getCount.incrementAndGet();
             notify();
 
             return word;

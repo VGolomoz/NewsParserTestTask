@@ -1,4 +1,4 @@
-package app.utils;
+package app.config;
 
 public class MyConstants {
 
@@ -10,6 +10,8 @@ public class MyConstants {
     public static final String CSS_QUERY_WITH_LAST_PUBLICATIONS = "section[class=\"publications-archive\"]";
     public static final String CSS_QUERY_WITH_NEWS_POST_DATE = "div[class=\"item time no-padding\"]";
     public static final String CSS_QUERY_WITH_NEWS_TEXT = "p";
+    public static final String EXTRA_SENTENCE_BEFORE_TEXT = "Читайте также";
+    public static final String EXTRA_SENTENCE_AFTER_TEXT = "Нравится ли Вам сайт? Оставьте свое мнение";
 
     public static final String POLITICS_CATEGORY = "https://www.unian.net/politics/";
     public static final String WAR_CATEGORY = "https://www.unian.net/war/";
