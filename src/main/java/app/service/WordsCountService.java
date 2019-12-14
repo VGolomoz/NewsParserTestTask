@@ -3,29 +3,44 @@ package app.service;
 public class WordsCountService {
 
     private Long counter = 0L;
+    private boolean countIsActive;
     private WordsBuffer wordsBuffer;
 
     public WordsCountService(WordsBuffer wordsBuffer) {
         this.wordsBuffer = wordsBuffer;
     }
 
-    public Long count(String wordMarker) {
+    private void readAndCompare(String wordMarker) {
 
-        int amountOfWritingThreads = 5;
+        new Thread(() -> {
 
-        while (Parser.writeThreadsFinished.intValue() < amountOfWritingThreads || !wordsBuffer.isEmpty) {
+            int amountOfWritingThreads = 5;
 
-            String word = wordsBuffer.getWord();
-            if (word.equalsIgnoreCase(wordMarker)) {
-                counter++;
+            while (Parser.writeThreadsFinished.intValue() < amountOfWritingThreads || !wordsBuffer.isEmpty) {
+
+                String word = null;
+
+                try {
+                    word = wordsBuffer.getWord();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                if (word.equalsIgnoreCase(wordMarker)) {
+                    counter++;
+                }
             }
+            countIsActive = false;
+        }).start();
+    }
+
+    public Long count(String wordMarker) throws InterruptedException {
+        countIsActive = true;
+        readAndCompare(wordMarker);
+        while (countIsActive) {
+            Thread.sleep(1000);
         }
 
-        for (String s: wordsBuffer.wordsList) {
-            System.out.println(s);
-        }
-        System.out.println("Add words: " + wordsBuffer.addCount);
-        System.out.println("Get words: " + wordsBuffer.getCount);
         return counter;
     }
 }
