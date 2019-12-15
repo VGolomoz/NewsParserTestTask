@@ -27,27 +27,4 @@ public class app {
 }
 
 
-//        try(FileReader reader = new FileReader(1 + ".txt"))
-//        {
-//            StringBuilder result = new StringBuilder();
-//            int c;
-//            while((c=reader.read())!=-1){
-//
-//                result.append((char)c);
-//            }
-//            System.out.println(result.toString());
-//        }
-//        catch(IOException ex){
-//
-//            System.out.println(ex.getMessage());
-//        }
-
-//        if (newsService.createNewsInDB(newsTitle, newsPostDate, fileNameForSaveNewsText)) {
-//            FileWriter writer = new FileWriter(fileNameForSaveNewsText, false);
-//            writer.write(clearNewsText.toString());
-//            writer.flush();
-//            writer.close();
-//        }
-
-
 
